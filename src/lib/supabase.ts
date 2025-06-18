@@ -1,42 +1,51 @@
-import { createClient } from '@supabase/supabase-js'
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-
-if (!supabaseUrl) {
-  throw new Error(
-    'Missing VITE_SUPABASE_URL environment variable. Please check your .env file and ensure it contains your Supabase project URL.'
-  )
-}
-
-if (!supabaseAnonKey) {
-  throw new Error(
-    'Missing VITE_SUPABASE_ANON_KEY environment variable. Please check your .env file and ensure it contains your Supabase anonymous key.'
-  )
-}
-
-// Add validation for URL format
-try {
-  new URL(supabaseUrl)
-} catch (error) {
-  throw new Error(
-    `Invalid VITE_SUPABASE_URL format: ${supabaseUrl}. Please ensure it's a valid URL.`
-  )
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+// Mock Supabase client for frontend-only development
+export const supabase = {
   auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true
+    getSession: () => Promise.resolve({ data: { session: null }, error: null }),
+    onAuthStateChange: (callback: any) => {
+      // Mock auth state change
+      return {
+        data: {
+          subscription: {
+            unsubscribe: () => {}
+          }
+        }
+      }
+    },
+    signInWithOAuth: () => Promise.resolve({ error: null }),
+    signInWithPassword: () => Promise.resolve({ error: null }),
+    signUp: () => Promise.resolve({ error: null }),
+    signOut: () => Promise.resolve({ error: null }),
+    getUser: () => Promise.resolve({ data: { user: null }, error: null })
   },
-  realtime: {
-    params: {
-      eventsPerSecond: 10
-    }
-  }
-})
+  from: (table: string) => ({
+    select: () => ({
+      eq: () => ({
+        order: () => Promise.resolve({ data: [], error: null }),
+        single: () => Promise.resolve({ data: null, error: null })
+      }),
+      order: () => Promise.resolve({ data: [], error: null })
+    }),
+    insert: () => Promise.resolve({ error: null }),
+    update: () => ({
+      eq: () => ({
+        select: () => ({
+          single: () => Promise.resolve({ data: null, error: null })
+        })
+      })
+    }),
+    delete: () => ({
+      eq: () => Promise.resolve({ error: null })
+    }),
+    upsert: () => ({
+      select: () => ({
+        single: () => Promise.resolve({ data: { id: '1', user_id: '1', target_score: 85 }, error: null })
+      })
+    })
+  })
+}
 
+// Mock types for frontend development
 export type DiaryEntry = {
   id: string
   user_id: string
