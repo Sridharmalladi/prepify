@@ -50,7 +50,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   }
 
   // Create floating particles for the modal
-  const particles = Array.from({ length: 20 }, (_, i) => (
+  const particles = Array.from({ length: 15 }, (_, i) => (
     <div
       key={i}
       className="particle"
@@ -63,16 +63,16 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   ))
 
   return (
-    <div className="fixed inset-0 bg-professional backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-hidden">
+    <div className="fixed inset-0 bg-professional backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-hidden page-transition">
       {/* Background Particles */}
       <div className="particles">
         {particles}
       </div>
       
-      <div className="relative z-10 glass-strong rounded-2xl p-8 w-full max-w-md border border-slate-700/30 card-3d animate-scale-in">
+      <div className="relative z-10 glass-strong rounded-2xl p-8 w-full max-w-md border border-slate-700/30 card-3d animate-scale-in hardware-accelerated">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors interactive"
+          className="absolute top-4 right-4 text-slate-400 hover:text-white transition-all duration-300 interactive hover:rotate-90"
         >
           <X className="h-5 w-5" />
         </button>
@@ -81,24 +81,24 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           <h2 className="text-2xl font-bold font-serif mb-2 text-gradient">
             {isSignUp ? 'Join the Journey' : 'Welcome Back'}
           </h2>
-          <p className="text-slate-400">
+          <p className="text-slate-400 animate-fade-in stagger-1">
             {isSignUp ? 'Create your account to start practicing interviews' : 'Sign in to continue your interview preparation'}
           </p>
         </div>
 
         {error && (
-          <div className="glass rounded-lg p-3 mb-6 border border-red-500/20 animate-fade-in">
+          <div className="glass rounded-lg p-3 mb-6 border border-red-500/20 animate-fade-in hover-lift">
             <p className="text-red-400 text-sm">{error}</p>
           </div>
         )}
 
         <form onSubmit={handleEmailAuth} className="space-y-4 mb-6">
-          <div>
+          <div className="animate-fade-in stagger-2">
             <label className="block text-sm font-medium text-slate-300 mb-2">
               Email
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400 transition-colors duration-300" />
               <input
                 type="email"
                 value={email}
@@ -110,12 +110,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             </div>
           </div>
 
-          <div>
+          <div className="animate-fade-in stagger-3">
             <label className="block text-sm font-medium text-slate-300 mb-2">
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400 transition-colors duration-300" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
@@ -128,7 +128,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white transition-all duration-300 interactive"
               >
                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
@@ -138,7 +138,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary w-full text-slate-900 py-3 rounded-lg font-semibold disabled:opacity-50 interactive"
+            className="btn-primary w-full text-slate-900 py-3 rounded-lg font-semibold disabled:opacity-50 interactive magnetic ripple animate-fade-in stagger-4"
           >
             {loading ? (
               <div className="spinner-3d mx-auto"></div>
@@ -148,7 +148,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           </button>
         </form>
 
-        <div className="relative mb-6">
+        <div className="relative mb-6 animate-fade-in stagger-5">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-slate-600"></div>
           </div>
@@ -160,7 +160,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         <button
           onClick={handleGoogleAuth}
           disabled={loading}
-          className="w-full bg-white hover:bg-gray-50 text-gray-900 py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 disabled:opacity-50 interactive shadow-elevated"
+          className="w-full bg-white hover:bg-gray-50 text-gray-900 py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 disabled:opacity-50 interactive magnetic shadow-elevated ripple animate-fade-in stagger-6"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -171,10 +171,10 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           <span>Continue with Google</span>
         </button>
 
-        <div className="text-center mt-6">
+        <div className="text-center mt-6 animate-fade-in stagger-7">
           <button
             onClick={() => setIsSignUp(!isSignUp)}
-            className="text-amber-400 hover:text-amber-300 text-sm transition-colors interactive"
+            className="text-amber-400 hover:text-amber-300 text-sm transition-all duration-300 interactive hover:scale-105"
           >
             {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
           </button>

@@ -48,11 +48,11 @@ export function LandingPage() {
     }
   ]
 
-  // Create floating particles
-  const particles = Array.from({ length: 50 }, (_, i) => (
+  // Create floating particles with better performance
+  const particles = Array.from({ length: 40 }, (_, i) => (
     <div
       key={i}
-      className="particle"
+      className="particle hardware-accelerated"
       style={{
         left: `${Math.random() * 100}%`,
         animationDelay: `${Math.random() * 20}s`,
@@ -62,9 +62,9 @@ export function LandingPage() {
   ))
 
   return (
-    <div className="min-h-screen bg-professional text-white overflow-hidden relative">
+    <div className="min-h-screen bg-professional text-white overflow-hidden relative page-transition">
       {/* Animated Background Particles */}
-      <div className="particles">
+      <div className="particles hardware-accelerated">
         {particles}
       </div>
 
@@ -82,7 +82,7 @@ export function LandingPage() {
             <button
               onClick={() => setShowAuthModal(true)}
               disabled={loading}
-              className="btn-primary text-slate-900 px-6 py-2 rounded-lg font-medium disabled:opacity-50 interactive"
+              className="btn-primary text-slate-900 px-6 py-2 rounded-lg font-medium disabled:opacity-50 interactive magnetic ripple"
             >
               {loading ? (
                 <div className="spinner-3d mx-auto"></div>
@@ -95,7 +95,7 @@ export function LandingPage() {
 
         <main className="container mx-auto px-6 pt-20">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-6xl md:text-7xl font-bold font-serif mb-6 text-gradient leading-tight animate-scale-in">
+            <h1 className="text-6xl md:text-7xl font-bold font-serif mb-6 text-gradient leading-tight animate-scale-in hardware-accelerated">
               Ace Your Next
               <br />
               Interview with AI.
@@ -108,41 +108,42 @@ export function LandingPage() {
               <button
                 onClick={() => setShowAuthModal(true)}
                 disabled={loading}
-                className="group btn-primary text-slate-900 px-8 py-4 rounded-xl font-semibold text-lg flex items-center space-x-2 shadow-elevated disabled:opacity-50 interactive"
+                className="group btn-primary text-slate-900 px-8 py-4 rounded-xl font-semibold text-lg flex items-center space-x-2 shadow-elevated disabled:opacity-50 interactive magnetic ripple"
               >
                 <span>Start Practicing</span>
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
               </button>
-              <div className="flex items-center space-x-2 text-slate-400 glass px-4 py-2 rounded-lg">
+              <div className="flex items-center space-x-2 text-slate-400 glass px-4 py-2 rounded-lg hover-lift">
                 <Users className="h-5 w-5" />
                 <span>Join thousands of job seekers</span>
               </div>
             </div>
 
-            {/* Interview Types Preview */}
+            {/* Interview Types Preview with enhanced animations */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
               {interviewTypes.map((type, index) => {
                 const IconComponent = type.icon
                 return (
                   <div
                     key={type.name}
-                    className={`card-3d glass-strong rounded-xl overflow-hidden interactive animate-fade-in stagger-${index + 1}`}
+                    className={`card-3d glass-strong rounded-xl overflow-hidden interactive hover-lift animate-fade-in stagger-${index + 1} hardware-accelerated group`}
                   >
                     <div className="aspect-square overflow-hidden relative">
                       <img
                         src={type.image}
                         alt={type.name}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
                       <div className="absolute top-4 right-4">
-                        <div className="glass p-2 rounded-lg">
+                        <div className="glass p-2 rounded-lg pulse-glow">
                           <IconComponent className="h-5 w-5 text-amber-400" />
                         </div>
                       </div>
                     </div>
                     <div className="p-4">
-                      <h3 className="font-semibold text-white mb-1">{type.name}</h3>
+                      <h3 className="font-semibold text-white mb-1 group-hover:text-amber-400 transition-colors duration-300">{type.name}</h3>
                       <p className="text-sm text-slate-300">{type.description}</p>
                     </div>
                   </div>
@@ -150,30 +151,31 @@ export function LandingPage() {
               })}
             </div>
 
-            {/* Additional Types */}
+            {/* Additional Types with staggered animations */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {additionalTypes.map((type, index) => {
                 const IconComponent = type.icon
                 return (
                   <div
                     key={type.name}
-                    className={`card-3d glass-strong rounded-xl overflow-hidden interactive animate-fade-in stagger-${index + 1}`}
+                    className={`card-3d glass-strong rounded-xl overflow-hidden interactive hover-lift animate-fade-in stagger-${index + 5} hardware-accelerated group`}
                   >
                     <div className="aspect-square overflow-hidden relative">
                       <img
                         src={type.image}
                         alt={type.name}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
                       <div className="absolute top-4 right-4">
-                        <div className="glass p-2 rounded-lg">
+                        <div className="glass p-2 rounded-lg pulse-glow">
                           <IconComponent className="h-5 w-5 text-amber-400" />
                         </div>
                       </div>
                     </div>
                     <div className="p-4">
-                      <h3 className="font-semibold text-white mb-1">{type.name}</h3>
+                      <h3 className="font-semibold text-white mb-1 group-hover:text-amber-400 transition-colors duration-300">{type.name}</h3>
                       <p className="text-sm text-slate-300">{type.description}</p>
                     </div>
                   </div>
@@ -183,11 +185,11 @@ export function LandingPage() {
           </div>
         </main>
 
-        {/* Features Section */}
+        {/* Features Section with enhanced animations */}
         <section className="container mx-auto px-6 py-20">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold font-serif mb-4 text-gradient">Why Choose AI Interview Prep?</h2>
-            <p className="text-xl text-slate-300 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold font-serif mb-4 text-gradient animate-fade-in">Why Choose AI Interview Prep?</h2>
+            <p className="text-xl text-slate-300 max-w-2xl mx-auto animate-fade-in stagger-1">
               Experience the future of interview preparation with cutting-edge AI technology
             </p>
           </div>
@@ -196,11 +198,11 @@ export function LandingPage() {
             {features.map((feature, index) => {
               const IconComponent = feature.icon
               return (
-                <div key={feature.title} className={`text-center group animate-fade-in stagger-${index + 1}`}>
-                  <div className={`w-20 h-20 bg-gradient-to-r ${feature.gradient} rounded-2xl flex items-center justify-center mx-auto mb-6 card-3d shadow-elevated float-delayed`}>
+                <div key={feature.title} className={`text-center group animate-fade-in stagger-${index + 2} hardware-accelerated`}>
+                  <div className={`w-20 h-20 bg-gradient-to-r ${feature.gradient} rounded-2xl flex items-center justify-center mx-auto mb-6 card-3d shadow-elevated float-delayed pulse-glow`}>
                     <IconComponent className="h-10 w-10 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-4 font-serif">{feature.title}</h3>
+                  <h3 className="text-xl font-semibold mb-4 font-serif group-hover:text-amber-400 transition-colors duration-300">{feature.title}</h3>
                   <p className="text-slate-300 leading-relaxed">
                     {feature.description}
                   </p>
@@ -210,41 +212,41 @@ export function LandingPage() {
           </div>
         </section>
 
-        {/* Stats Section */}
+        {/* Stats Section with counter animations */}
         <section className="container mx-auto px-6 py-16">
-          <div className="glass-strong rounded-3xl p-8 md:p-12">
+          <div className="glass-strong rounded-3xl p-8 md:p-12 hover-lift">
             <div className="grid md:grid-cols-4 gap-8 text-center">
-              <div className="animate-fade-in stagger-1">
-                <div className="text-3xl md:text-4xl font-bold text-gradient mb-2">10K+</div>
+              <div className="animate-fade-in stagger-1 group">
+                <div className="text-3xl md:text-4xl font-bold text-gradient mb-2 group-hover:scale-110 transition-transform duration-300">10K+</div>
                 <div className="text-slate-300">Interviews Completed</div>
               </div>
-              <div className="animate-fade-in stagger-2">
-                <div className="text-3xl md:text-4xl font-bold text-gradient mb-2">95%</div>
+              <div className="animate-fade-in stagger-2 group">
+                <div className="text-3xl md:text-4xl font-bold text-gradient mb-2 group-hover:scale-110 transition-transform duration-300">95%</div>
                 <div className="text-slate-300">Success Rate</div>
               </div>
-              <div className="animate-fade-in stagger-3">
-                <div className="text-3xl md:text-4xl font-bold text-gradient mb-2">500+</div>
+              <div className="animate-fade-in stagger-3 group">
+                <div className="text-3xl md:text-4xl font-bold text-gradient mb-2 group-hover:scale-110 transition-transform duration-300">500+</div>
                 <div className="text-slate-300">Companies Covered</div>
               </div>
-              <div className="animate-fade-in stagger-4">
-                <div className="text-3xl md:text-4xl font-bold text-gradient mb-2">24/7</div>
+              <div className="animate-fade-in stagger-4 group">
+                <div className="text-3xl md:text-4xl font-bold text-gradient mb-2 group-hover:scale-110 transition-transform duration-300">24/7</div>
                 <div className="text-slate-300">AI Availability</div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
+        {/* CTA Section with enhanced interactivity */}
         <section className="container mx-auto px-6 py-20">
-          <div className="text-center glass-strong rounded-3xl p-12 card-3d">
-            <h2 className="text-4xl font-bold font-serif mb-6 text-gradient">Ready to Land Your Dream Job?</h2>
-            <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
+          <div className="text-center glass-strong rounded-3xl p-12 card-3d hover-lift">
+            <h2 className="text-4xl font-bold font-serif mb-6 text-gradient animate-fade-in">Ready to Land Your Dream Job?</h2>
+            <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto animate-fade-in stagger-1">
               Join thousands of successful candidates who've used AI Interview Prep to ace their interviews
             </p>
             <button
               onClick={() => setShowAuthModal(true)}
               disabled={loading}
-              className="btn-primary text-slate-900 px-10 py-4 rounded-xl font-semibold text-xl shadow-elevated interactive"
+              className="btn-primary text-slate-900 px-10 py-4 rounded-xl font-semibold text-xl shadow-elevated interactive magnetic ripple animate-fade-in stagger-2"
             >
               Start Your Journey Today
             </button>
@@ -253,7 +255,7 @@ export function LandingPage() {
 
         {/* Footer */}
         <footer className="container mx-auto px-6 py-8 border-t border-slate-700/30">
-          <div className="text-center text-slate-400">
+          <div className="text-center text-slate-400 animate-fade-in">
             <p>Built with Bolt.new • Powered by AI, Tavus, LiveKit, and Supabase</p>
           </div>
         </footer>
