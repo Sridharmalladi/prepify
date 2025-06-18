@@ -4,23 +4,42 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-/* Performance optimizations */
+/* Performance optimizations for high refresh rates */
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+  /* Enable 120fps+ on supported devices */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1;
 }
 
 body {
   font-family: 'Inter', sans-serif;
   background: #0f172a;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+  /* Force hardware acceleration */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  /* Optimize for high refresh rates */
+  will-change: scroll-position;
 }
 
-/* Enable hardware acceleration for better performance */
-.hardware-accelerated {
+/* Global hardware acceleration for smooth animations */
+.hardware-accelerated,
+.glass,
+.glass-strong,
+.btn-primary,
+.card-3d,
+.interactive {
   transform: translateZ(0);
-  will-change: transform;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .font-serif {
@@ -28,20 +47,24 @@ body {
   font-weight: 700;
 }
 
-/* Optimized professional gradient background */
+/* Ultra-smooth professional gradient background */
 .bg-professional {
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #1e293b 75%, #0f172a 100%);
   background-size: 400% 400%;
-  animation: gradientShift 25s ease infinite;
+  animation: gradientShift 30s ease infinite;
   will-change: background-position;
+  /* Optimize for 120fps+ */
+  contain: layout style paint;
 }
 
 @keyframes gradientShift {
   0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
 }
 
-/* Optimized animated background particles */
+/* Optimized particles with 120fps support */
 .particles {
   position: absolute;
   top: 0;
@@ -51,6 +74,7 @@ body {
   overflow: hidden;
   pointer-events: none;
   will-change: transform;
+  contain: layout style paint;
 }
 
 .particle {
@@ -60,17 +84,37 @@ body {
   background: rgba(251, 191, 36, 0.4);
   border-radius: 50%;
   will-change: transform, opacity;
+  animation: floatParticle 20s linear infinite;
 }
 
 .particle:nth-child(odd) {
   background: rgba(148, 163, 184, 0.3);
+  animation-duration: 25s;
 }
 
 .particle:nth-child(3n) {
   background: rgba(251, 191, 36, 0.6);
+  animation-duration: 15s;
 }
 
-/* Enhanced glass morphism with better performance */
+@keyframes floatParticle {
+  0% {
+    transform: translate3d(0, 100vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(100px, -100px, 0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Enhanced glass morphism with 120fps optimization */
 .glass {
   background: rgba(30, 41, 59, 0.4);
   backdrop-filter: blur(16px);
@@ -79,7 +123,8 @@ body {
   box-shadow: 
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  will-change: transform;
+  will-change: transform, backdrop-filter;
+  contain: layout style;
 }
 
 .glass-strong {
@@ -90,17 +135,52 @@ body {
   box-shadow: 
     0 12px 40px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  will-change: transform, backdrop-filter;
+  contain: layout style;
+}
+
+/* Ultra-smooth 3D card effects */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   will-change: transform;
 }
 
-/* Enhanced button animations */
+.card-3d:hover {
+  transform: perspective(1000px) rotateY(8deg) rotateX(4deg) translateZ(30px);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(251, 191, 36, 0.3);
+}
+
+.card-3d::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, transparent 50%, rgba(148, 163, 184, 0.1) 100%);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.card-3d:hover::before {
+  opacity: 1;
+}
+
+/* Ultra-smooth button animations */
 .btn-primary {
   position: relative;
   overflow: hidden;
   background: linear-gradient(135deg, #f59e0b, #d97706);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
   will-change: transform, box-shadow;
+  contain: layout style;
 }
 
 .btn-primary::before {
@@ -111,7 +191,8 @@ body {
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s ease;
+  transition: left 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: left;
 }
 
 .btn-primary:hover::before {
@@ -119,13 +200,46 @@ body {
 }
 
 .btn-primary:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 12px 30px rgba(245, 158, 11, 0.5);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(245, 158, 11, 0.6);
 }
 
 .btn-primary:active {
-  transform: translateY(-1px) scale(1.02);
+  transform: translateY(-2px) scale(1.02);
   transition: all 0.1s ease;
+}
+
+/* Smooth floating animations */
+.float {
+  animation: floating 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.float-delayed {
+  animation: floating 6s ease-in-out infinite;
+  animation-delay: -2s;
+  will-change: transform;
+}
+
+.float-slow {
+  animation: floating 8s ease-in-out infinite;
+  animation-delay: -4s;
+  will-change: transform;
+}
+
+@keyframes floating {
+  0%, 100% { 
+    transform: translate3d(0, 0, 0) rotate(0deg); 
+  }
+  25% { 
+    transform: translate3d(10px, -20px, 0) rotate(1deg); 
+  }
+  50% { 
+    transform: translate3d(-5px, -30px, 0) rotate(-1deg); 
+  }
+  75% { 
+    transform: translate3d(-10px, -15px, 0) rotate(0.5deg); 
+  }
 }
 
 /* Smooth text gradient animations */
@@ -141,33 +255,197 @@ body {
 
 @keyframes gradientText {
   0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
 }
 
-/* Modern loading spinner */
+/* Ultra-smooth loading spinner */
 .spinner-3d {
   width: 40px;
   height: 40px;
   border: 3px solid rgba(251, 191, 36, 0.2);
   border-top: 3px solid #fbbf24;
   border-radius: 50%;
-  animation: spin3d 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  animation: spin3d 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
   will-change: transform;
 }
 
 @keyframes spin3d {
-  0% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(180deg) scale(1.1); }
-  100% { transform: rotate(360deg) scale(1); }
+  0% { 
+    transform: rotate(0deg) scale(1); 
+  }
+  50% { 
+    transform: rotate(180deg) scale(1.1); 
+  }
+  100% { 
+    transform: rotate(360deg) scale(1); 
+  }
 }
 
-/* Smooth scrolling with momentum */
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 2rem;
+/* Enhanced form inputs with micro-interactions */
+.form-input {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: border-color, box-shadow, background, transform;
+  contain: layout style;
 }
 
-/* Custom scrollbar with animations */
+.form-input:focus {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: #fbbf24;
+  box-shadow: 
+    0 0 0 3px rgba(251, 191, 36, 0.1),
+    0 4px 12px rgba(251, 191, 36, 0.2);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.form-input:hover:not(:focus) {
+  border-color: rgba(251, 191, 36, 0.5);
+  background: rgba(30, 41, 59, 0.7);
+  transform: translateY(-1px);
+}
+
+/* Interactive elements with smooth transitions */
+.interactive {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
+}
+
+.interactive:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.interactive:active {
+  transform: translateY(-2px) scale(1.01);
+  transition: all 0.1s ease;
+}
+
+/* Smooth pulse glow effect */
+.pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite alternate;
+  will-change: box-shadow;
+}
+
+@keyframes pulseGlow {
+  from {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+  }
+  to {
+    box-shadow: 0 0 40px rgba(251, 191, 36, 0.8);
+  }
+}
+
+/* Neon glow effect */
+.neon-glow {
+  text-shadow: 
+    0 0 5px rgba(251, 191, 36, 0.5),
+    0 0 10px rgba(251, 191, 36, 0.3),
+    0 0 15px rgba(251, 191, 36, 0.2),
+    0 0 20px rgba(251, 191, 36, 0.1);
+  animation: neonPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+  from {
+    text-shadow: 
+      0 0 5px rgba(251, 191, 36, 0.5),
+      0 0 10px rgba(251, 191, 36, 0.3),
+      0 0 15px rgba(251, 191, 36, 0.2);
+  }
+  to {
+    text-shadow: 
+      0 0 10px rgba(251, 191, 36, 0.8),
+      0 0 20px rgba(251, 191, 36, 0.6),
+      0 0 30px rgba(251, 191, 36, 0.4),
+      0 0 40px rgba(251, 191, 36, 0.2);
+  }
+}
+
+/* Enhanced shadows with depth */
+.shadow-professional {
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.shadow-elevated {
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.4),
+    0 10px 20px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Avatar container with smooth 3D effects */
+.avatar-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.avatar-frame {
+  transform: rotateY(0deg);
+  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(148, 163, 184, 0.1));
+  background-clip: padding-box;
+  will-change: transform;
+}
+
+.avatar-frame:hover {
+  transform: rotateY(8deg) rotateX(4deg) scale(1.05);
+  border-image: linear-gradient(135deg, #fbbf24, #d97706) 1;
+}
+
+/* Status indicators with smooth animations */
+.status-indicator {
+  position: relative;
+}
+
+.status-indicator::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #0f172a;
+  will-change: background, transform;
+}
+
+.status-online::before {
+  background: #10b981;
+  animation: pulse 2s infinite;
+}
+
+.status-offline::before {
+  background: #ef4444;
+}
+
+.status-connecting::before {
+  background: #f59e0b;
+  animation: blink 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+  50% { 
+    transform: scale(1.2); 
+    opacity: 0.7; 
+  }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.3; }
+}
+
+/* Custom scrollbar with smooth animations */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -195,44 +473,55 @@ textarea:focus-visible {
   outline: 2px solid #fbbf24;
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.2);
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Enhanced form inputs with micro-interactions */
-.form-input {
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: border-color, box-shadow, background;
+/* Smooth page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
 }
 
-.form-input:focus {
-  background: rgba(30, 41, 59, 0.8);
-  border-color: #fbbf24;
-  box-shadow: 
-    0 0 0 3px rgba(251, 191, 36, 0.1),
-    0 4px 12px rgba(251, 191, 36, 0.2);
-  transform: translateY(-1px);
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.form-input:hover:not(:focus) {
-  border-color: rgba(251, 191, 36, 0.5);
-  background: rgba(30, 41, 59, 0.7);
+.page-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* Enhanced shadows with depth */
-.shadow-professional {
-  box-shadow: 
-    0 4px 6px rgba(0, 0, 0, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.shadow-elevated {
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.3),
-    0 8px 16px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
+/* High refresh rate optimizations */
+@media (min-resolution: 120dpi) {
+  .hardware-accelerated,
+  .glass,
+  .glass-strong,
+  .btn-primary,
+  .card-3d,
+  .interactive {
+    transform: translate3d(0, 0, 0);
+    will-change: transform, opacity;
+  }
+  
+  /* Enable 120fps animations on high refresh displays */
+  .particle {
+    animation-timing-function: linear;
+  }
+  
+  .floating,
+  .float,
+  .float-delayed,
+  .float-slow {
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
 }
 
 /* Reduce motion for accessibility */
@@ -248,22 +537,55 @@ textarea:focus-visible {
   .particles {
     display: none;
   }
+  
+  .card-3d:hover {
+    transform: none;
+  }
 }
 
-/* Mobile optimizations */
+/* Mobile optimizations for smooth performance */
 @media (max-width: 768px) {
   .particles {
-    opacity: 0.5;
+    opacity: 0.3;
+  }
+  
+  .card-3d:hover {
+    transform: translateY(-4px) scale(1.02);
   }
   
   .btn-primary:hover {
     transform: translateY(-2px) scale(1.02);
   }
+  
+  /* Reduce complexity on mobile for better performance */
+  .glass,
+  .glass-strong {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
 }
 
-/* High refresh rate optimizations */
-@media (min-resolution: 120dpi) {
-  .hardware-accelerated {
-    transform: translate3d(0, 0, 0);
+/* Ultra-wide screen optimizations */
+@media (min-width: 2560px) {
+  .particles {
+    opacity: 0.8;
+  }
+  
+  .card-3d:hover {
+    transform: perspective(1500px) rotateY(10deg) rotateX(5deg) translateZ(40px);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .glass,
+  .glass-strong {
+    border-width: 2px;
+    border-color: rgba(251, 191, 36, 0.5);
+  }
+  
+  .text-gradient {
+    -webkit-text-fill-color: #fbbf24;
+    background: none;
   }
 }
