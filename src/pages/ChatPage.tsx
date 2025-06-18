@@ -324,7 +324,7 @@ export function ChatPage() {
                               className="w-32 h-32 bg-gradient-to-r from-amber-500/30 to-slate-500/30 rounded-full mx-auto mb-4 flex items-center justify-center border-2 border-amber-400/50"
                             >
                               <span className="text-6xl">👔</span>
-                            </div>
+                            </motion.div>
                             <p className="text-slate-300 mb-2">AI Interviewer is ready</p>
                             <div className="flex items-center justify-center space-x-2">
                               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
